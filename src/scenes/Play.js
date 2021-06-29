@@ -4,8 +4,9 @@ class Play extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('rocket','./assets/rocket.png');
-        this.load.image('spaceship','./assets/spaceship.png');
+        this.load.image('rocket','./assets/bullet.png');
+        this.load.image('spaceship','./assets/crow1.png');
+        this.load.image('eagle','./assets/eagle.png');
         this.load.image('sky','./assets/sky.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64,
         frameHeight: 32, startFrame: 0, endFrame: 9});
@@ -29,6 +30,7 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4,'spaceship', 0, 30).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 +borderPadding*2,'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4,'spaceship', 0, 10).setOrigin(0,0);
+        this.eagle = new Eagle(this, game.config.width + borderUISize, borderUISize + borderPadding*8,'eagle', 0, 50).setOrigin(0,0);
 
         //define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -83,6 +85,7 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+            this.eagle.update();
         }
         
         //check collisions
@@ -98,12 +101,27 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
+        if(this.checkCollision(this.p1Rocket, this.eagle)){
+            this.p1Rocket.reset();
+            this.shipExplode(this.eagle);
+        }
     }
     checkCollision(rocket, ship){
         if(rocket.x < ship.x + ship.width &&
             rocket.x + rocket.width > ship.x &&
             rocket.y < ship.y + ship.height &&
             rocket.height + rocket.y > ship.y ){
+                return true;
+            } else{
+                return false;
+            }
+    }
+
+    checkCollision(rocket, eagle){
+        if(rocket.x < eagle.x + eagle.width &&
+            rocket.x + rocket.width > eagle.x &&
+            rocket.y < eagle.y + eagle.height &&
+            rocket.height + rocket.y > eagle.y ){
                 return true;
             } else{
                 return false;
@@ -123,6 +141,21 @@ class Play extends Phaser.Scene {
 
         //add score and repaint score display
         this.p1Score += ship.points;
+        this.scoreLeft.text = this.p1Score;
+    }
+    eagleExplode(eagle){
+        eagle.alpha = 0; //hide the eagle
+        let boom = this.add.sprite(eagle.x, eagle.y, 'explosion').setOrigin(0,0);
+        boom.anims.play('explode');
+        this.sound.play('sfx_explosion');
+        boom.on('animationcomplete', () => {
+            eagle.reset();
+            eagle.alpha = 1;
+            boom.destroy();
+        });
+
+        //add score and repaint score display
+        this.p1Score += eagle.points;
         this.scoreLeft.text = this.p1Score;
     }
 }
