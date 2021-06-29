@@ -17,12 +17,12 @@ class Play extends Phaser.Scene {
         this.sky = this.add.tileSprite(0, 0, 640, 480, 'sky').setOrigin(0,0);
         
         // green UI background
-        this.add.rectangle(0,borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0,0);
+        this.add.rectangle(0, borderUISize/10000, game.config.width, borderUISize * 2, 0xBCB9B8).setOrigin(0,0);
         
-        this.add.rectangle(0,0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(0,game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(0,0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height , 0xFFFFFF).setOrigin(0,0);
+        //this.add.rectangle(0,0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
+       //this.add.rectangle(0,game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0);
+       //this.add.rectangle(0,0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0,0);
+       //this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height , 0xFFFFFF).setOrigin(0,0);
 
         this.p1Rocket = new Rocket(this, game.config.width / 2, game.config.height - (borderUISize + borderPadding), 'rocket').setOrigin(0.5, 0);
         
@@ -57,7 +57,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize +
+        this.scoreLeft = this.add.text(borderUISize/10000, borderUISize/10000 +
         borderPadding*2, this.p1Score, scoreConfig);
 
         this.gameOver = false;
